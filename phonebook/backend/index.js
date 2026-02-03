@@ -4,6 +4,7 @@ const morgan = require('morgan')
 const cors = require('cors')
 app.use(cors())
 app.use(express.json())
+app.use(express.static('dist'))
 const requestLogger = (req, res, next) => {
 	console.log('Method: ', req.method);
 	console.log('Path: ', req.path);
@@ -101,19 +102,19 @@ app.post('/api/persons/', (req, res) => {
 	res.json(newObj)
 })
 //when modifying number of contacts that already exist
-app.put('/api/persons/:id', (req,res)=>{
+app.put('/api/persons/:id', (req, res) => {
 	const id = req.params.id
 	const obj = persons.find(person => person.id === id)
-	const newObj = {...obj, "number":req.body.number}
-	persons =persons.map(person=>{
-		if(person.id === id){
+	const newObj = { ...obj, "number": req.body.number }
+	persons = persons.map(person => {
+		if (person.id === id) {
 			return newObj
-		}else {
+		} else {
 			return person
 		}
 	})
-	if(obj){
-	res.json(newObj)
+	if (obj) {
+		res.json(newObj)
 	}
 	res.status(400).json('object not found')
 })
